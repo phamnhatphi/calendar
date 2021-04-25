@@ -5,9 +5,9 @@
 // require_once('pdoconfig.php');
 class DB
 {
-  private $host = 'localhost';
-  private $dbname = 'calendar';
-  private $username = 'root';
+  private $host = '';
+  private $dbname = '';
+  private $username = '';
   private $password = '';
   private static $instance = NULl;
   public function getInstance() {
