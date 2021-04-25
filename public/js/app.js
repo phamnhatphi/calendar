@@ -53,21 +53,32 @@
             console.log('clickDayname', date);
         },
         'beforeCreateSchedule': function (e) {
-            console.log('beforeCreateSchedule', e);
             saveNewSchedule(e);
         },
         'beforeUpdateSchedule': function (e) {
             var schedule = e.schedule;
             var changes = e.changes;
-
-            console.log('beforeUpdateSchedule', e);
-
             if (changes && !changes.isAllDay && schedule.category === 'allday') {
                 changes.category = 'time';
             }
 
-            cal.updateSchedule(schedule.id, schedule.calendarId, changes);
-            refreshScheduleVisibility();
+            if (changes && changes != null) {
+                $.post('index.php?controller=calendar&action=editCalendar', {
+                    id: schedule.id,
+                    work_name: changes.title ? changes.title : '',
+                    location: changes.location ? changes.location : '',
+                    start_date: changes.start ? moment(changes.start._date).format("YYYY-MM-DDTHH:mm:ss") : '',
+                    end_date: changes.end ? moment(changes.end._date).format("YYYY-MM-DDTHH:mm:ss") : '',
+                    status: changes.state ? changes.state : '',
+                }).done(function (response) {
+                    if (response) {
+                        cal.updateSchedule(schedule.id, schedule.calendarId, changes);
+                        refreshScheduleVisibility();
+                    }
+                }).fail(function () {
+                    console.log("error");
+                });
+            }
         },
         'beforeDeleteSchedule': function (e) {
             console.log('beforeDeleteSchedule', e);
@@ -302,17 +313,6 @@
             schedule.bgColor = calendar.bgColor;
             schedule.borderColor = calendar.borderColor;
         }
-        switch (schedule.state) {
-            case 'Doing':
-                schedule.state = 1;
-                break;
-            case 'Planning':
-                schedule.state = 2;
-                break;
-            default:
-                schedule.state = 1;
-                break;
-        }
         $.post('index.php?controller=calendar&action=addCalendar', {
             work_name: schedule.title,
             location: schedule.location,
@@ -325,7 +325,7 @@
                 refreshScheduleVisibility();
             }
         }).fail(function () {
-            alert("error");
+            console.log("error");
         });
     }
 

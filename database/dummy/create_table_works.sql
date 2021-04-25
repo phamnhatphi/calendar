@@ -5,6 +5,6 @@ CREATE TABLE `works` (
   location VARCHAR(255) NOT NULL,
   start_date DATETIME NOT NULL,
   end_date DATETIME NOT NULL,
-  status TINYINT(1) NOT NULL
+  status varchar(10) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 LOCK TABLES `works` WRITE;

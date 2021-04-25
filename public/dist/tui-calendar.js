@@ -7603,7 +7603,6 @@ Base.prototype.updateSchedule = function(schedule, options) {
     }
 
     if (options.state) {
-        console.log(123, options.state);
         schedule.set('state', options.state);
     }
 

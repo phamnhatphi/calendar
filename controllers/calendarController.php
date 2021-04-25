@@ -25,8 +25,6 @@ class CalendarController extends BaseController
                 'state' => $this->renderState($value['status']),
             ]);
         }
-
-        //
         $this->render('calendar', $schedules);
     }
 
@@ -41,6 +39,20 @@ class CalendarController extends BaseController
         ]];
         $workModal = new Work();
         return $workModal->insert($datas);
+    }
+
+    public function editCalendar()
+    {
+        $data = [
+            'id' =>  $_POST['id'],
+            'work_name' => $_POST['work_name'],
+            'location' => $_POST['location'],
+            'start_date' => $_POST['start_date'],
+            'end_date' => $_POST['end_date'],
+            'status' => $_POST['status'],
+        ];
+        $workModal = new Work();
+        return $workModal->update($data);
     }
 
     public function renderState($status)

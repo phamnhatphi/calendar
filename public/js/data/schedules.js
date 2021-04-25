@@ -2,7 +2,6 @@
 
 /*eslint-disable*/
 
-console.log(schedules);
 var ScheduleList = [];
 var ScheduleList1 = [];
 
@@ -113,7 +112,7 @@ function generateRandomSchedule(calendar, renderStart, renderEnd) {
     schedule.id = chance.guid();
     schedule.calendarId = calendar.id;
 
-    schedule.title = 'phi';
+    schedule.title = chance.sentence({words: 3});
     schedule.body = chance.bool({ likelihood: 20 }) ? chance.sentence({ words: 10 }) : '';
     schedule.isReadOnly = chance.bool({ likelihood: 20 });
     generateTime(schedule, renderStart, renderEnd);
@@ -152,7 +151,6 @@ function generateRandomSchedule(calendar, renderStart, renderEnd) {
 }
 
 function generateSchedule(viewName, renderStart, renderEnd) {
-    console.log(schedules);
     ScheduleList = schedules.map(item => ({
         ...item,
         start: new Date(item.start),
