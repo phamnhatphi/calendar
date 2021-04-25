@@ -1,6 +1,6 @@
 <?php
 $controllers = array(
-    'calendar' => ['index', 'addCalendar', 'editCalendar'],
+    'calendar' => ['index', 'addCalendar', 'editCalendar', 'deleteCalendar'],
     'pages' => ['error'],
 ); // Các controllers trong hệ thống và các action có thể gọi ra từ controller đó.
 // Nếu các tham số nhận được từ URL không hợp lệ (không thuộc list controller và action có thể gọi

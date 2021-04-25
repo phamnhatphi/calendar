@@ -16,12 +16,11 @@
         useCreationPopup: useCreationPopup,
         useDetailPopup: useDetailPopup,
         calendars: CalendarList,
+        taskView: false, // Can be also ['milestone', 'task']
+        scheduleView: ['time'],  // Can be also ['allday', 'time']
         template: {
             milestone: function (model) {
                 return '<span class="calendar-font-icon ic-milestone-b"></span> <span style="background-color: ' + model.bgColor + '">' + model.title + '</span>';
-            },
-            allday: function (schedule) {
-                return getTimeTemplate(schedule, true);
             },
             time: function (schedule) {
                 return getTimeTemplate(schedule, false);
@@ -71,9 +70,12 @@
                     end_date: changes.end ? moment(changes.end._date).format("YYYY-MM-DDTHH:mm:ss") : '',
                     status: changes.state ? changes.state : '',
                 }).done(function (response) {
-                    if (response) {
+                    response = JSON.parse(response);
+                    if (response.status) {
                         cal.updateSchedule(schedule.id, schedule.calendarId, changes);
                         refreshScheduleVisibility();
+                    } else {
+                        alert("error")
                     }
                 }).fail(function () {
                     console.log("error");
@@ -81,8 +83,18 @@
             }
         },
         'beforeDeleteSchedule': function (e) {
-            console.log('beforeDeleteSchedule', e);
-            cal.deleteSchedule(e.schedule.id, e.schedule.calendarId);
+            $.post('index.php?controller=calendar&action=deleteCalendar', {
+                id: e.schedule.id,
+            }).done(function (response) {
+                response = JSON.parse(response);
+                if (response.status) {
+                    cal.deleteSchedule(e.schedule.id, e.schedule.calendarId);
+                } else {
+                    alert("error")
+                }
+            }).fail(function () {
+                console.log("error");
+            });
         },
         'afterRenderSchedule': function (e) {
             var schedule = e.schedule;
@@ -320,9 +332,12 @@
             end_date: moment(schedule.end._date).format("YYYY-MM-DDTHH:mm:ss"),
             status: schedule.state
         }).done(function (response) {
-            if (response) {
+            response = JSON.parse(response);
+            if (response.status) {
                 cal.createSchedules([schedule]);
                 refreshScheduleVisibility();
+            } else {
+                alert('error')
             }
         }).fail(function () {
             console.log("error");
