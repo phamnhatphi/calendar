@@ -1,14 +1,14 @@
 <?php
-require_once('connection.php');
+require_once 'connection.php';
 if (isset($_GET['controller'])) {
-  $controller = $_GET['controller'];
-  if (isset($_GET['action'])) {
-    $action = $_GET['action'];
-  } else {
-    $action = 'index';
-  }
+    $controller = $_GET['controller'];
+    if (isset($_GET['action'])) {
+        $action = $_GET['action'];
+    } else {
+        $action = 'index';
+    }
 } else {
-  $controller = 'calendar';
-  $action = 'index';
+    $controller = 'calendar';
+    $action = 'index';
 }
-require_once('routes.php');
+require_once 'routes.php';
