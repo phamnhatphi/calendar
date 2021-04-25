@@ -1,7 +1,7 @@
 <?php
 require_once('controllers/baseController.php');
 
-class pagesController extends BaseController
+class PagesController extends BaseController
 {
   function __construct()
   {

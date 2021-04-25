@@ -5,7 +5,7 @@
 /* global moment, tui, chance */
 /* global findCalendar, CalendarList, ScheduleList, generateSchedule */
 
-(function(window, Calendar) {
+(function (window, Calendar) {
     var cal, resizeThrottled;
     var useCreationPopup = true;
     var useDetailPopup = true;
@@ -17,43 +17,46 @@
         useDetailPopup: useDetailPopup,
         calendars: CalendarList,
         template: {
-            milestone: function(model) {
+            milestone: function (model) {
                 return '<span class="calendar-font-icon ic-milestone-b"></span> <span style="background-color: ' + model.bgColor + '">' + model.title + '</span>';
             },
-            allday: function(schedule) {
+            allday: function (schedule) {
                 return getTimeTemplate(schedule, true);
             },
-            time: function(schedule) {
+            time: function (schedule) {
                 return getTimeTemplate(schedule, false);
             },
-            popupStateFree: function() {
+            popupStateFree: function () {
                 return 'Planning';
             },
-            popupStateBusy: function() {
+            popupStateBusy: function () {
                 return 'Doing';
             },
-            popupDetailState: function(schedule) {
+            popupDetailState: function (schedule) {
                 return 'Status : ' + schedule.state || 'Busy';
             },
+            popupDetailLocation: function (schedule) {
+                return 'Location : ' + schedule.location || '';
+            }
         }
     });
 
     // event handlers
     cal.on({
-        'clickMore': function(e) {
+        'clickMore': function (e) {
             console.log('clickMore', e);
         },
-        'clickSchedule': function(e) {
+        'clickSchedule': function (e) {
             console.log('clickSchedule', e);
         },
-        'clickDayname': function(date) {
+        'clickDayname': function (date) {
             console.log('clickDayname', date);
         },
-        'beforeCreateSchedule': function(e) {
+        'beforeCreateSchedule': function (e) {
             console.log('beforeCreateSchedule', e);
             saveNewSchedule(e);
         },
-        'beforeUpdateSchedule': function(e) {
+        'beforeUpdateSchedule': function (e) {
             var schedule = e.schedule;
             var changes = e.changes;
 
@@ -66,16 +69,16 @@
             cal.updateSchedule(schedule.id, schedule.calendarId, changes);
             refreshScheduleVisibility();
         },
-        'beforeDeleteSchedule': function(e) {
+        'beforeDeleteSchedule': function (e) {
             console.log('beforeDeleteSchedule', e);
             cal.deleteSchedule(e.schedule.id, e.schedule.calendarId);
         },
-        'afterRenderSchedule': function(e) {
+        'afterRenderSchedule': function (e) {
             var schedule = e.schedule;
             // var element = cal.getElement(schedule.id, schedule.calendarId);
             // console.log('afterRenderSchedule', element);
         },
-        'clickTimezonesCollapseBtn': function(timezonesCollapsed) {
+        'clickTimezonesCollapseBtn': function (timezonesCollapsed) {
             console.log('timezonesCollapsed', timezonesCollapsed);
 
             if (timezonesCollapsed) {
@@ -299,10 +302,31 @@
             schedule.bgColor = calendar.bgColor;
             schedule.borderColor = calendar.borderColor;
         }
-
-        cal.createSchedules([schedule]);
-
-        refreshScheduleVisibility();
+        switch (schedule.state) {
+            case 'Doing':
+                schedule.state = 1;
+                break;
+            case 'Planning':
+                schedule.state = 2;
+                break;
+            default:
+                schedule.state = 1;
+                break;
+        }
+        $.post('index.php?controller=calendar&action=addCalendar', {
+            work_name: schedule.title,
+            location: schedule.location,
+            start_date: moment(schedule.start._date).format("YYYY-MM-DDTHH:mm:ss"),
+            end_date: moment(schedule.end._date).format("YYYY-MM-DDTHH:mm:ss"),
+            status: schedule.state
+        }).done(function (response) {
+            if (response) {
+                cal.createSchedules([schedule]);
+                refreshScheduleVisibility();
+            }
+        }).fail(function () {
+            alert("error");
+        });
     }
 
     function onChangeCalendars(e) {
@@ -315,19 +339,19 @@
         if (calendarId === 'all') {
             allCheckedCalendars = checked;
 
-            calendarElements.forEach(function(input) {
+            calendarElements.forEach(function (input) {
                 var span = input.parentNode;
                 input.checked = checked;
                 span.style.backgroundColor = checked ? span.style.borderColor : 'transparent';
             });
 
-            CalendarList.forEach(function(calendar) {
+            CalendarList.forEach(function (calendar) {
                 calendar.checked = checked;
             });
         } else {
             findCalendar(calendarId).checked = checked;
 
-            allCheckedCalendars = calendarElements.every(function(input) {
+            allCheckedCalendars = calendarElements.every(function (input) {
                 return input.checked;
             });
 
@@ -344,13 +368,13 @@
     function refreshScheduleVisibility() {
         var calendarElements = Array.prototype.slice.call(document.querySelectorAll('#calendarList input'));
 
-        CalendarList.forEach(function(calendar) {
+        CalendarList.forEach(function (calendar) {
             cal.toggleSchedules(calendar.id, !calendar.checked, false);
         });
 
         cal.render(true);
 
-        calendarElements.forEach(function(input) {
+        calendarElements.forEach(function (input) {
             var span = input.nextElementSibling;
             span.style.backgroundColor = input.checked ? span.style.borderColor : 'transparent';
         });
@@ -385,9 +409,9 @@
     }
 
     function currentCalendarDate(format) {
-      var currentDate = moment([cal.getDate().getFullYear(), cal.getDate().getMonth(), cal.getDate().getDate()]);
+        var currentDate = moment([cal.getDate().getFullYear(), cal.getDate().getMonth(), cal.getDate().getDate()]);
 
-      return currentDate.format(format);
+        return currentDate.format(format);
     }
 
     function setRenderRangeText() {
@@ -412,8 +436,6 @@
     function setSchedules() {
         cal.clear();
         generateSchedule(cal.getViewName(), cal.getDateRangeStart(), cal.getDateRangeEnd());
-        console.log(1, ScheduleList);
-        console.log(2, ScheduleList1);
         cal.createSchedules(ScheduleList);
 
         refreshScheduleVisibility();
@@ -436,7 +458,7 @@
         return target.dataset ? target.dataset.action : target.getAttribute('data-action');
     }
 
-    resizeThrottled = tui.util.throttle(function() {
+    resizeThrottled = tui.util.throttle(function () {
         cal.render();
     }, 50);
 
@@ -449,10 +471,10 @@
 })(window, tui.Calendar);
 
 // set calendars
-(function() {
+(function () {
     var calendarList = document.getElementById('calendarList');
     var html = [];
-    CalendarList.forEach(function(calendar) {
+    CalendarList.forEach(function (calendar) {
         html.push('<div class="lnb-calendars-item"><label>' +
             '<input type="checkbox" class="tui-full-calendar-checkbox-round" value="' + calendar.id + '" checked>' +
             '<span style="border-color: ' + calendar.borderColor + '; background-color: ' + calendar.borderColor + ';"></span>' +
