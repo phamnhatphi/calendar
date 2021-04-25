@@ -22,7 +22,7 @@ class CalendarController extends BaseController
                 'location' => $value['location'],
                 'start' => $value['start_date'],
                 'end' => $value['end_date'],
-                'state' => $this->renderState($value['status']),
+                'state' => $value['status'],
             ]);
         }
         $this->render('calendar', $schedules);
@@ -38,13 +38,14 @@ class CalendarController extends BaseController
             'status' => $_POST['status'],
         ]];
         $workModal = new Work();
-        return $workModal->insert($datas);
+        $result = $workModal->insert($datas);
+        echo json_encode(array('status' => $result));
     }
 
     public function editCalendar()
     {
         $data = [
-            'id' =>  $_POST['id'],
+            'id' => $_POST['id'],
             'work_name' => $_POST['work_name'],
             'location' => $_POST['location'],
             'start_date' => $_POST['start_date'],
@@ -52,25 +53,16 @@ class CalendarController extends BaseController
             'status' => $_POST['status'],
         ];
         $workModal = new Work();
-        return $workModal->update($data);
+        $result = $workModal->update($data);
+        echo json_encode(array('status' => $result));
     }
 
-    public function renderState($status)
+    public function deleteCalendar()
     {
-        switch ($status) {
-            case '1':
-                $status = 'Planning';
-                break;
-            case '2':
-                $status = 'Doing';
-                break;
-            case '3':
-                $status = 'Complete';
-                break;
-            default:
-                $status = 'Planning';
-                break;
-        }
-        return $status;
+        $id[] = $_POST['id'];
+        $workModal = new Work();
+        $result = $workModal->delete($id);
+        echo json_encode(array('status' => $result));
     }
+
 }

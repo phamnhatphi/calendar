@@ -28,4 +28,11 @@ class Work extends Model
         $model->setFillable($this->fillable);
         return $model->update($data);
     }
+
+    public function delete($id)
+    {
+        $model = new Model();
+        $model->setModel($this->tbl);
+        return $model->delete($id);
+    }
 }

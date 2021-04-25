@@ -55,7 +55,6 @@ class Model
             return true;
         } catch (Exception $e) {
             $db->rollback();
-            throw $e;
             return false;
         }
     }
@@ -85,12 +84,22 @@ class Model
             return true;
         } catch (Exception $e) {
             $db->rollback();
-            throw $e;
             return false;
         }
     }
 
     protected function delete($id) {
-        
+        $db = new DB();
+        $db = $db->getInstance();
+        $query = $db->prepare("DELETE FROM ". $this->tbl ." WHERE id=?");
+        try {
+            $db->beginTransaction();
+            $query->execute($id);
+            $db->commit();
+            return true;
+        } catch (Exception $e) {
+            $db->rollback();
+            return false;
+        }
     }
 }
