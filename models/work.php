@@ -1,17 +1,38 @@
 <?php
+require_once 'model.php';
 
-class work
+class Work extends Model
 {
-    public function __construct()
-    {
-
-    }
+    private $tbl = 'works';
+    private $fillable = ['work_name', 'location', 'start_date', 'end_date', 'status'];
 
     public function all()
     {
-        $list = [];
-        $db = new DB();
-        $req = $db->getInstance()->query('SELECT * FROM works');
-        return $req->fetchAll();
+        $model = new Model();
+        $model->setModel($this->tbl);
+        return $model->getAllData();
+    }
+
+    public function insert($datas)
+    {
+        $model = new Model();
+        $model->setModel($this->tbl);
+        $model->setFillable($this->fillable);
+        return $model->create($datas);
+    }
+
+    public function update($data)
+    {
+        $model = new Model();
+        $model->setModel($this->tbl);
+        $model->setFillable($this->fillable);
+        return $model->update($data);
+    }
+
+    public function delete($id)
+    {
+        $model = new Model();
+        $model->setModel($this->tbl);
+        return $model->delete($id);
     }
 }

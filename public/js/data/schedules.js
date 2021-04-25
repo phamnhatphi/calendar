@@ -2,7 +2,6 @@
 
 /*eslint-disable*/
 
-console.log(schedules);
 var ScheduleList = [];
 var ScheduleList1 = [];
 
@@ -113,20 +112,20 @@ function generateRandomSchedule(calendar, renderStart, renderEnd) {
     schedule.id = chance.guid();
     schedule.calendarId = calendar.id;
 
-    schedule.title = 'phi';
+    schedule.title = chance.sentence({words: 3});
     schedule.body = chance.bool({ likelihood: 20 }) ? chance.sentence({ words: 10 }) : '';
     schedule.isReadOnly = chance.bool({ likelihood: 20 });
     generateTime(schedule, renderStart, renderEnd);
 
-    // schedule.isPrivate = chance.bool({likelihood: 10});
-    // schedule.location = chance.address();
-    // schedule.attendees = chance.bool({likelihood: 70}) ? generateNames() : [];
-    // schedule.recurrenceRule = chance.bool({likelihood: 20}) ? 'repeated events' : '';
-    // schedule.state = chance.bool({likelihood: 20}) ? 'Free' : 'Busy';
-    // schedule.color = calendar.color;
-    // schedule.bgColor = calendar.bgColor;
-    // schedule.dragBgColor = calendar.dragBgColor;
-    // schedule.borderColor = calendar.borderColor;
+    schedule.isPrivate = chance.bool({likelihood: 10});
+    schedule.location = chance.address();
+    schedule.attendees = chance.bool({likelihood: 70}) ? generateNames() : [];
+    schedule.recurrenceRule = chance.bool({likelihood: 20}) ? 'repeated events' : '';
+    schedule.state = chance.bool({likelihood: 20}) ? 'Free' : 'Busy';
+    schedule.color = calendar.color;
+    schedule.bgColor = calendar.bgColor;
+    schedule.dragBgColor = calendar.dragBgColor;
+    schedule.borderColor = calendar.borderColor;
 
     if (schedule.category === 'milestone') {
         schedule.color = schedule.bgColor;
@@ -152,42 +151,12 @@ function generateRandomSchedule(calendar, renderStart, renderEnd) {
 }
 
 function generateSchedule(viewName, renderStart, renderEnd) {
-    ScheduleList1 = [{
-        id: '1',
-        calendarId: '1',
-        title: 'Tham',
-        category: 'time',
-        dueDateClass: '',
-        start: new Date('2021-04-23T02:30:00+07:00'),
-        end: new Date('2021-04-23T03:30:00+07:00'),
-        state: 'Doing'
-    },
-    {
-        id: '2',
-        calendarId: '1',
-        title: 'Phi',
-        category: 'time',
-        dueDateClass: '',
-        start: new Date('2021-04-23T02:30:00+07:00'),
-        end: new Date('2021-04-23T04:30:00+07:00'),
-        isReadOnly: false,    // schedule is read-only
-        state: 'Complete'
-    }];
     ScheduleList = schedules.map(item => ({
         ...item,
         start: new Date(item.start),
         end: new Date(item.end),
+        location: item.location,
         category: 'time',
+        calendarId: '1', //userId
     }))
-    // CalendarList.forEach(function(calendar) {
-    //     var i = 0, length = 2;
-    //     if (viewName === 'month') {
-    //         length = 3;
-    //     } else if (viewName === 'day') {
-    //         length = 4;
-    //     }
-    //     for (; i < length; i += 1) {
-    //         generateRandomSchedule(calendar, renderStart, renderEnd);
-    //     }
-    // });
 }
