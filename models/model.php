@@ -59,4 +59,38 @@ class Model
             return false;
         }
     }
+
+    protected function update($data)
+    {
+        if (count($data) == 0 || $this->fillable == '') {
+            return false;
+        }
+        $db = new DB();
+        $db = $db->getInstance();
+        $updateSql = '';
+        foreach ($data as $key => $value) {
+            if ($value == '') {
+                unset($data[$key]);
+            }
+            if ($value != '' && $key != 'id') {
+                $updateSql .= $key . ' =:' . $key . ', ';
+            }
+        }
+        $updateSql = rtrim($updateSql, ", ");
+        $query = $db->prepare("UPDATE " . $this->tbl . " SET ". $updateSql . " WHERE id =:id");
+        try {
+            $db->beginTransaction();
+            $query->execute($data);
+            $db->commit();
+            return true;
+        } catch (Exception $e) {
+            $db->rollback();
+            throw $e;
+            return false;
+        }
+    }
+
+    protected function delete($id) {
+        
+    }
 }
