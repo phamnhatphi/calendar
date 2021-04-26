@@ -449,9 +449,19 @@
     }
 
     function setSchedules() {
-        cal.clear();
-        generateSchedule(cal.getViewName(), cal.getDateRangeStart(), cal.getDateRangeEnd());
-        cal.createSchedules(ScheduleList);
+        $.post('/index.php?controller=calendar&action=getCalendar').done(function (response) {
+            response = JSON.parse(response);
+            if (response.datas) {
+                schedules = response.datas;
+                cal.clear();
+                generateSchedule(cal.getViewName(), cal.getDateRangeStart(), cal.getDateRangeEnd());
+                cal.createSchedules(ScheduleList);
+            } else {
+                alert("error")
+            }
+        }).fail(function () {
+            console.log("error");
+        });
 
         refreshScheduleVisibility();
     }

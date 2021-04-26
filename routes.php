@@ -1,6 +1,6 @@
 <?php
 $controllers = array(
-    'calendar' => ['index', 'addCalendar', 'editCalendar', 'deleteCalendar'],
+    'calendar' => ['index', 'addCalendar', 'editCalendar', 'deleteCalendar', 'getCalendar'],
     'pages' => ['error'],
 );
 if (!array_key_exists($controller, $controllers) || !in_array($action, $controllers[$controller])) {

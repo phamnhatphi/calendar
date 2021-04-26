@@ -28,6 +28,25 @@ class CalendarController extends BaseController
         $this->render('calendar', $schedules);
     }
 
+    public function getCalendar()
+    {
+        $schedules = [];
+        $workModal = new Work();
+        $datas = $workModal->all();
+        foreach ($datas as $key => $value) {
+            array_push($schedules, (object) [
+                'id' => $value['id'],
+                'calendarId' => $value['id'],
+                'title' => $value['work_name'],
+                'location' => $value['location'],
+                'start' => $value['start_date'],
+                'end' => $value['end_date'],
+                'state' => $value['status'],
+            ]);
+        }
+        echo json_encode(array('datas' => $schedules));
+    }
+
     public function addCalendar()
     {
         $datas = [[
