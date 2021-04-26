@@ -57,7 +57,7 @@ class CalendarController extends BaseController
             'status' => $_POST['status'],
         ]];
         $workModal = new Work();
-        $result = $workModal->insert($datas);
+        $result = $workModal->insertCalendar($datas);
         echo json_encode(array('status' => $result));
     }
 
@@ -72,7 +72,7 @@ class CalendarController extends BaseController
             'status' => $_POST['status'],
         ];
         $workModal = new Work();
-        $result = $workModal->update($data);
+        $result = $workModal->updateCalendar($data);
         echo json_encode(array('status' => $result));
     }
 
@@ -80,7 +80,7 @@ class CalendarController extends BaseController
     {
         $id[] = $_POST['id'];
         $workModal = new Work();
-        $result = $workModal->delete($id);
+        $result = $workModal->deleteCalendar($id);
         echo json_encode(array('status' => $result));
     }
 

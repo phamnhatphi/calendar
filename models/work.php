@@ -8,31 +8,27 @@ class Work extends Model
 
     public function all()
     {
-        $model = new Model();
-        $model->setModel($this->tbl);
-        return $model->getAllData();
+        $this->setModel($this->tbl);
+        return $this->getAllData();
     }
 
-    public function insert($datas)
+    public function insertCalendar($datas)
     {
-        $model = new Model();
-        $model->setModel($this->tbl);
-        $model->setFillable($this->fillable);
-        return $model->create($datas);
+        $this->setModel($this->tbl);
+        $this->setFillable($this->fillable);
+        return $this->create($datas);
     }
 
-    public function update($data)
+    public function updateCalendar($data)
     {
-        $model = new Model();
-        $model->setModel($this->tbl);
-        $model->setFillable($this->fillable);
-        return $model->update($data);
+        $this->setModel($this->tbl);
+        $this->setFillable($this->fillable);
+        return $this->update($data);
     }
 
-    public function delete($id)
+    public function deleteCalendar($id)
     {
-        $model = new Model();
-        $model->setModel($this->tbl);
-        return $model->delete($id);
+        $this->setModel($this->tbl);
+        return $this->delete($id);
     }
 }
