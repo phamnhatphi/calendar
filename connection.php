@@ -1,7 +1,5 @@
 
 <?php
-
-// require_once('pdoconfig.php');
 class DB
 {
     private $host = '';
