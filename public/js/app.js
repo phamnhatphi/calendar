@@ -62,7 +62,7 @@
             }
 
             if (changes && changes != null) {
-                $.post('index.php?controller=calendar&action=editCalendar', {
+                $.post('/index.php?controller=calendar&action=editCalendar', {
                     id: schedule.id,
                     work_name: changes.title ? changes.title : '',
                     location: changes.location ? changes.location : '',
@@ -83,7 +83,7 @@
             }
         },
         'beforeDeleteSchedule': function (e) {
-            $.post('index.php?controller=calendar&action=deleteCalendar', {
+            $.post('/index.php?controller=calendar&action=deleteCalendar', {
                 id: e.schedule.id,
             }).done(function (response) {
                 response = JSON.parse(response);
@@ -325,7 +325,7 @@
             schedule.bgColor = calendar.bgColor;
             schedule.borderColor = calendar.borderColor;
         }
-        $.post('index.php?controller=calendar&action=addCalendar', {
+        $.post('/index.php?controller=calendar&action=addCalendar', {
             work_name: schedule.title,
             location: schedule.location,
             start_date: moment(schedule.start._date).format("YYYY-MM-DDTHH:mm:ss"),

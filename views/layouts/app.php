@@ -6,9 +6,9 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.css">
     <link rel="stylesheet" type="text/css" href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css">
-    <link rel="stylesheet" type="text/css" href="/phi/public/dist/tui-calendar.css">
-    <link rel="stylesheet" type="text/css" href="/phi/public/css/default.css">
-    <link rel="stylesheet" type="text/css" href="/phi/public/css/icons.css">
+    <link rel="stylesheet" type="text/css" href="public/dist/tui-calendar.css">
+    <link rel="stylesheet" type="text/css" href="public/css/default.css">
+    <link rel="stylesheet" type="text/css" href="public/css/icons.css">
 </head>
   <body>
   <?= @$content ?>
@@ -22,8 +22,8 @@
     <script src="https://uicdn.toast.com/tui.date-picker/v4.0.3/tui-date-picker.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chance/1.0.13/chance.min.js"></script>
-    <script src="/phi/public/dist/tui-calendar.js"></script>
-    <script src="/phi/public/js/data/calendars.js"></script>
-    <script src="/phi/public/js/data/schedules.js"></script>
-    <script src="/phi/public/js/app.js"></script>
+    <script src="public/dist/tui-calendar.js"></script>
+    <script src="public/js/data/calendars.js"></script>
+    <script src="public/js/data/schedules.js"></script>
+    <script src="public/js/app.js"></script>
 </html>

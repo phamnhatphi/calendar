@@ -11,6 +11,6 @@ if (!array_key_exists($controller, $controllers) || !in_array($action, $controll
 foreach ($controllers as $key => $value) {
     include_once 'controllers/' . $key . 'Controller.php';
 }
-$klass = str_replace('_', '', ucwords($controller, '_')) . 'Controller';
+$klass = ucwords($controller) . 'Controller';
 $controller = new $klass;
 $controller->$action();
